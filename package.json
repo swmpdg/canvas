@@ -1,0 +1,21 @@
+{
+  "name": "@vandalsquad/canvas",
+  "version": "0.0.0",
+  "description": "Vandalsquad canvas engine source.",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vandalsquad/canvas.git"
+  },
+  "keywords": [
+    "vandalsquad",
+    "graffiti",
+    "canvase",
+    "streetart",
+    "engine"
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/vandalsquad/canvas/issues"
+  },
+  "homepage": "https://github.com/vandalsquad/canvas#readme"
+}
