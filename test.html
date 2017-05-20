@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>test</title>
+</head>
+
+<body>
+	<canvas id="canvas" width="1280" height="700" style="cursor: crosshair;"></canvas>
+	<script>
+		var ctx = canvas.getContext('2d');
+		var c = { w: canvas.width, h: canvas.height };
+		var m = { x: 0, y: 0, l: false };
+		
+		ctx.fillStyle = '#818479';
+		ctx.fillRect(0, 0, c.w, c.h);
+		
+		function getRandomInt(min, max) {
+			return Math.floor(Math.random() * (max - min + 1)) + min;
+		}
+		
+		function sprayMask(r) {
+			for (var i = 0; i <= getRandomInt(50, 100); ++i) {
+			
+				if (getRandomInt(1, 100) <= 5)
+					continue;
+			
+				var x = getRandomInt(-r, r);
+				var y = getRandomInt(-r, r);
+				var d = Math.sqrt(x * x + y * y);
+				
+				if (d > r)
+					continue;
+				
+				ctx.fillStyle = 'rgba(211,211,211,' + getRandomInt(10, 50) / 100 + ')';
+				ctx.beginPath();
+				ctx.arc(m.x - 7 - x, m.y - 6 - y, 3 - getRandomInt(0, 2), 0, 2 * Math.PI);
+				ctx.fill();
+			}
+		};
+		
+		function render() {
+
+			if (m.l) {
+				sprayMask(20);
+			}
+		
+			requestAnimationFrame(render);
+		}
+		
+		canvas.onmousemove = function (e) {
+			m.x = e.clientX;
+			m.y = e.clientY;
+		};
+		
+		canvas.onmousedown = function (e) {
+			if (e.button == 0)
+				m.l = true;
+		};
+		
+		canvas.onmouseup = function (e) {
+			if (e.button == 0)
+				m.l = false;
+		};
+		
+		canvas.onmouseleave = function (e) {
+			m.l = false;
+		};
+		
+		requestAnimationFrame(render);
+	</script>
+</body>
+
+</html>
