@@ -11,6 +11,7 @@
 		var ctx = canvas.getContext('2d');
 		var c = { w: canvas.width, h: canvas.height };
 		var m = { x: 0, y: 0, l: false };
+		var om = false;
 		
 		ctx.fillStyle = '#818479';
 		ctx.fillRect(0, 0, c.w, c.h);
@@ -31,7 +32,42 @@
 			masks.push(msk);
 		}
 		
-		function spray(r) {
+		function linearSpray(r, p1, p2) {
+			//var d = Math.ceil(Math.sqrt(Math.pow(p1.x - p2.x, 2) + Math.pow(p1.y - p2.y, 2)));
+			window.setTimeout(function () {
+				var d = {
+					x: Math.ceil(Math.sqrt(Math.pow(p1.x - p2.x, 2))),
+					y: Math.ceil(Math.sqrt(Math.pow(p1.y - p2.y, 2)))
+				};
+				for (var x = 0; x <= d.x; x += r) {
+					var x2 = x;
+					if (p1.x < p2.x)
+						x2 += p1.x;
+					else
+						x2 += p2.x;
+					var t = {
+						x: x2,
+						y: Math.ceil(p1.y + (x2 - p1.x) * (p2.y - p1.y)/(p2.x - p1.x))	
+					};
+					spray(r, t, 2);
+				}
+				for (var y = 0; y <= d.y; y += r) {
+					var y2 = y;
+					if (p1.y < p2.y)
+						y2 += p1.y;
+					else
+						y2 += p2.y;
+					var t = {
+						x: Math.ceil(p1.x + (y2 - p1.y) * (p2.x - p1.x)/(p2.y - p1.y)),
+						y: y2	
+					};
+					// p1.y + (x2 - p1.x) * (p2.y - p1.y)/(p2.x - p1.x)
+					spray(r, t, 2);
+				}
+			}, 10);
+		}
+		
+		function spray(r, p, o) {
 			<!-- for (var i = 0; i <= getRandomInt(80, 100); ++i) { -->
 			
 				<!-- if (getRandomInt(1, 100) <= 5) -->
@@ -46,7 +82,7 @@
 				
 				<!-- ctx.fillStyle = 'rgba(211,211,211,' + getRandomInt(10, 35) / 100 + ')'; -->
 				<!-- ctx.beginPath(); -->
-				<!-- ctx.arc(m.x - 7 - x, m.y - 6 - y, 3 - getRandomInt(0, 2), 0, 2 * Math.PI); -->
+				<!-- ctx.arc(p.x - 7 - x, p.y - 6 - y, 3 - getRandomInt(0, 2), 0, 2 * Math.PI); -->
 				<!-- ctx.fill(); -->
 			<!-- } -->
 			var f = 1 / r;
@@ -55,27 +91,35 @@
 					var d = Math.sqrt(x * x + y * y);
 					if (d > r)
 						continue;
-					ctx.fillStyle = 'rgba(211, 0, 0,' + (1 - d * f) + ')';
+					ctx.fillStyle = 'rgba(211, 0, 0,' + (1 - d * f) / o + ')';
 					ctx.beginPath();
-					ctx.arc(m.x - 7 - x, m.y - 6 - y, 1, 0, 2 * Math.PI);
+					ctx.arc(p.x - 7 - x, p.y - 6 - y, 1, 0, 2 * Math.PI);
 					ctx.fill();
 				}
 			}
 		};
 		
-		var om = false;
 		function render() {
 
 			if (m.l) {
-				spray(20);
+				spray(20, m, 4);
 				
-				<!-- if (om && (om.x != m.x || om.y != m.y)) { -->
-					<!-- ctx.strokeStyle = '#f00'; -->
+				if (om) {
+					
+					linearSpray(20, {
+						x: om.x,
+						y: om.y
+					}, {
+						x: m.x,
+						y: m.y
+					});
+					<!-- ctx.strokeStyle = '#ff0'; -->
 					<!-- ctx.beginPath(); -->
 					<!-- ctx.moveTo(om.x, om.y); -->
 					<!-- ctx.lineTo(m.x, m.y); -->
 					<!-- ctx.stroke(); -->
-				<!-- } -->
+				} else
+					om = {};
 				
 				om.x = m.x;
 				om.y = m.y;
