@@ -2,6 +2,9 @@
   "name": "@vandalsquad/canvas",
   "version": "0.0.0",
   "description": "Vandalsquad canvas engine source.",
+  "scripts": {
+    "build": "tsc"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/vandalsquad/canvas.git"
