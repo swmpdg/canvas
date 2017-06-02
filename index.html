@@ -3,11 +3,21 @@
 
 <head>
 	<title>test</title>
+    <script src="pixi.min.js"></script>
+    <script src="require.js"></script>
 </head>
 
 <body>
-	<canvas id="canvas" width="1280" height="700" style="cursor:crosshair;"></canvas>
-	<script src="index.js"></script>
+    <div id="frame" style="width: 640px; height: 400px;"></div>
+    <script>
+        requirejs(["theatre"], function(theatre) {
+            window.theatre = theatre;
+            var scene = new theatre.Scene("Test");
+            scene.background.color = 0x0072c6;
+            scene.container = document.getElementById("frame");
+            window.s = scene;
+        });
+    </script>
 </body>
 
 </html>
